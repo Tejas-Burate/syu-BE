@@ -1,5 +1,6 @@
 const userMasterModel = require("./userMasterModel");
 const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const UserStatus = require("../userStatusMaster/userStatusMasterModel");
 
 const createUser = async (req, res) => {
   try {
@@ -40,7 +41,9 @@ const createUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await userMasterModel.findAll();
+    const users = await userMasterModel.findAll({
+      include: [{ model: UserStatus }],
+    });
     if (users.length === 0) {
       res.status(404).json({
         status: 404,

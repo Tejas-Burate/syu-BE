@@ -1,6 +1,10 @@
 const syu = (app) => {
   app.use("/auth", require("../app/syu/auth/authRoutes"));
-  app.use("/role", require("../app/syu/roles/roleRoutes"));
+  app.use("/role", require("../app/syu/roleMaster/roleMasterRoutes"));
+  app.use(
+    "/userStatus",
+    require("../app/syu/userStatusMaster/userStatusMasterRoutes")
+  );
   app.use(
     "/department",
     require("../app/syu/departmentMaster/departmentMasterRoutes")

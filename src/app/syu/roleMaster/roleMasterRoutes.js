@@ -5,7 +5,7 @@ const {
   getRoleById,
   updateRoleById,
   deleteRoleById,
-} = require("./roleController");
+} = require("./roleMasterController");
 
 const router = express.Router();
 

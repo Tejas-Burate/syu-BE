@@ -1,5 +1,7 @@
-const roleModel = require("./roleModel");
+const userStatusModel = require("./roleMasterModel");
 const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const departmentModel = require("../departmentMaster/departmentMasterModel");
+const userModel = require("../userMaster/userMasterModel");
 
 const createRole = async (req, res) => {
   try {
@@ -10,7 +12,7 @@ const createRole = async (req, res) => {
         message: "Please fill all fields.",
       });
     }
-    const role = await roleModel.create({
+    const role = await userStatusModel.create({
       ...req.body,
       createdDate: getCurrentDateTime(),
       updatedDate: getCurrentDateTime(),
@@ -40,7 +42,9 @@ const createRole = async (req, res) => {
 
 const getAllRoles = async (req, res) => {
   try {
-    const roles = await roleModel.findAll();
+    const roles = await userStatusModel.findAll({
+      include: [{ model: departmentModel }, { model: userModel }],
+    });
     if (roles.length === 0) {
       return res.status(404).json({
         status: 404,
@@ -63,7 +67,9 @@ const getAllRoles = async (req, res) => {
 const getRoleById = async (req, res) => {
   try {
     const id = req.params.id;
-    const role = await roleModel.findByPk(id);
+    const role = await userStatusModel.findByPk(id, {
+      include: [{ model: departmentModel }, { model: userModel }],
+    });
     if (!role) {
       return res.status(404).json({
         status: 404,
@@ -81,7 +87,7 @@ const getRoleById = async (req, res) => {
 const updateRoleById = async (req, res) => {
   try {
     const id = req.params.id;
-    const [rowsAffected, [updatedRole]] = await roleModel.update(
+    const [rowsAffected, [updatedRole]] = await userStatusModel.update(
       { ...req.body, updatedDate: getCurrentDateTime() },
       { where: { roleId: id }, returning: true }
     );
@@ -106,7 +112,9 @@ const updateRoleById = async (req, res) => {
 const deleteRoleById = async (req, res) => {
   try {
     const id = req.params.id;
-    const deletedRole = await roleModel.destroy({ where: { roleId: id } });
+    const deletedRole = await userStatusModel.destroy({
+      where: { roleId: id },
+    });
     if (!deletedRole) {
       return res.status(400).json({
         status: 400,

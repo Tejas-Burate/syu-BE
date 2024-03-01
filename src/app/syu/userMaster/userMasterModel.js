@@ -1,87 +1,84 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
+const UserStatus = require("../userStatusMaster/userStatusMasterModel");
 
 class User extends Model {}
+
 User.init(
   {
-    userId: {
+    userid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    userName: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
     },
-    mobileNo: {
+    emailpassword: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
     },
-    userRole: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    phone: {
+      type: DataTypes.STRING,
     },
     otp: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-    dob: {
-      type: DataTypes.DATE,
-      allowNull: false,
+    userstatusid: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1, // Set default value to 1
+      references: {
+        model: UserStatus, // Assuming the name of the UserStatus model
+        key: "userstatusid",
+      },
     },
-    gender: {
+    profilephoto: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-    maritalStatus: {
+    deviceid: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-    emergencyContactName: {
+    appver: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-    emergencyContactPhone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    emergencyContactEmail: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    emergencyContactRelationWithApplicant: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    isStudentUnitedStatesPermanentResidentOrGreenCardHolder: {
+    mobileverified: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      defaultValue: false,
     },
-    createdDate: {
-      type: DataTypes.STRING,
-      defaultValue: DataTypes.NOW,
+    refuserid: {
+      type: DataTypes.INTEGER,
     },
-    updatedDate: {
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    createddate: {
       type: DataTypes.STRING,
-      defaultValue: DataTypes.NOW,
+    },
+    updateddate: {
+      type: DataTypes.STRING,
+    },
+    createdby: {
+      type: DataTypes.INTEGER,
+    },
+    updatedby: {
+      type: DataTypes.INTEGER,
     },
   },
   {
     sequelize,
-    tableName: "userMaster",
     modelName: "User",
+    tableName: "usermaster", // Adjust the table name if needed
     timestamps: false,
   }
 );
+
+User.belongsTo(UserStatus, { foreignKey: "userstatusid" });
 
 module.exports = User;
