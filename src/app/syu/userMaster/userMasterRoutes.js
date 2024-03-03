@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  createUser,
+  // createUser,
   getAllUsers,
   getUserById,
   updateUserById,
@@ -9,7 +9,7 @@ const {
 
 const router = express.Router();
 
-router.post("/createUser", createUser);
+// router.post("/createUser", createUser);
 router.get("/getAllUsers", getAllUsers);
 router.get("/getUserById/:id", getUserById);
 router.put("/updateUserById/:id", updateUserById);

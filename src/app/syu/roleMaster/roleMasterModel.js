@@ -3,16 +3,16 @@ const sequelize = require("../../../config/dbConnection"); // Adjust the path as
 const Department = require("../departmentMaster/departmentMasterModel");
 const User = require("../userMaster/userMasterModel");
 
-class UserStatus extends Model {}
+class Role extends Model {}
 
-UserStatus.init(
+Role.init(
   {
-    userstatusid: {
+    roleid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    statusname: {
+    rolename: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -30,15 +30,18 @@ UserStatus.init(
         key: "userid",
       },
     },
+    location: {
+      type: DataTypes.STRING,
+    },
     isactive: {
       type: DataTypes.STRING(10),
       defaultValue: "TRUE",
     },
     createddate: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
     },
     updateddate: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
     },
     createdby: {
       type: DataTypes.INTEGER,
@@ -49,13 +52,13 @@ UserStatus.init(
   },
   {
     sequelize,
-    modelName: "UserStatus",
-    tableName: "userstatusmaster",
+    modelName: "Role",
+    tableName: "rolemaster",
     timestamps: false,
   }
 );
 
-UserStatus.belongsTo(Department, { foreignKey: "departmentid" });
-UserStatus.belongsTo(User, { foreignKey: "departmentmanager" });
+Role.belongsTo(Department, { foreignKey: "departmentid" });
+Role.belongsTo(User, { foreignKey: "departmentmanager" });
 
-module.exports = UserStatus;
+module.exports = Role;

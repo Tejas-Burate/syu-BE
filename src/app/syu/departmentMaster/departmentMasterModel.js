@@ -22,12 +22,10 @@ Department.init(
       defaultValue: true,
     },
     createddate: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
+      type: DataTypes.STRING,
     },
     updateddate: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
+      type: DataTypes.STRING,
     },
     createdby: {
       type: DataTypes.INTEGER,

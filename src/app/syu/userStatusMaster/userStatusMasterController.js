@@ -12,8 +12,8 @@ const createUserStatus = async (req, res) => {
     }
     const userStatus = await userStatusModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
+      createddate: getCurrentDateTime(),
+      updateddate: getCurrentDateTime(),
     });
     return res.status(201).json({
       status: 201,
@@ -83,8 +83,8 @@ const updateUserStatusById = async (req, res) => {
   try {
     const id = req.params.id;
     const [rowsAffected, updatedUserStatus] = await userStatusModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { userStatusId: id }, returning: true }
+      { ...req.body, updateddate: getCurrentDateTime() },
+      { where: { userstatusid: id }, returning: true }
     );
     if (rowsAffected === 0) {
       return res.status(400).json({
@@ -110,7 +110,7 @@ const deleteUserStatusById = async (req, res) => {
   try {
     const id = req.params.id;
     const rowsDeleted = await userStatusModel.destroy({
-      where: { userStatusId: id },
+      where: { userstatusid: id },
     });
     if (!rowsDeleted) {
       return res.status(400).json({

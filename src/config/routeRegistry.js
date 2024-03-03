@@ -9,6 +9,10 @@ const syu = (app) => {
     "/department",
     require("../app/syu/departmentMaster/departmentMasterRoutes")
   );
+  app.use(
+    "/userRole",
+    require("../app/syu/userRoleMapping/userRoleMappingRoutes")
+  );
   app.use("/country", require("../app/syu/countryMaster/countryRouter"));
   app.use("/search", require("../app/syu/searchFilters/searchFiltersRoutes"));
   app.use("/college", require("../app/syu/collegeMaster/collegeRoutes"));

@@ -44,10 +44,10 @@ const emailLogin = async (req, res) => {
       where: { email: email, password: password },
     });
     if (!user) {
-      res.status(404).json({
-        status: 404,
-        error: "404",
-        message: `User of email ${email} is not found..`,
+      res.status(401).json({
+        status: 401,
+        error: "401",
+        message: `user is unauthorized....`,
       });
       return;
     }

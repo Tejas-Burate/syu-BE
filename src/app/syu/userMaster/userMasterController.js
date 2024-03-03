@@ -2,42 +2,42 @@ const userMasterModel = require("./userMasterModel");
 const getCurrentDateTime = require("../../../shared/middleware/currentTime");
 const UserStatus = require("../userStatusMaster/userStatusMasterModel");
 
-const createUser = async (req, res) => {
-  try {
-    if (!req.body) {
-      res.status(400).json({
-        status: 400,
-        error: "400",
-        message: "Please fill all fields..",
-      });
-      return;
-    }
-    const user = await userMasterModel.create({
-      ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
-    });
-    if (!user) {
-      res.status(400).json({
-        status: 400,
-        error: "400",
-        message: "Failed to create user..",
-      });
-      return;
-    }
-    res.status(201).json({
-      status: 201,
-      error: "201",
-      message: "User created successfully..",
-      data: user,
-    });
-  } catch (error) {
-    console.log("error", error);
-    res
-      .status(500)
-      .json({ status: 500, error: "500", message: "Internal server error" });
-  }
-};
+// const createUser = async (req, res) => {
+//   try {
+//     if (!req.body) {
+//       res.status(400).json({
+//         status: 400,
+//         error: "400",
+//         message: "Please fill all fields..",
+//       });
+//       return;
+//     }
+//     const user = await userMasterModel.create({
+//       ...req.body,
+//       createdDate: getCurrentDateTime(),
+//       updatedDate: getCurrentDateTime(),
+//     });
+//     if (!user) {
+//       res.status(400).json({
+//         status: 400,
+//         error: "400",
+//         message: "Failed to create user..",
+//       });
+//       return;
+//     }
+//     res.status(201).json({
+//       status: 201,
+//       error: "201",
+//       message: "User created successfully..",
+//       data: user,
+//     });
+//   } catch (error) {
+//     console.log("error", error);
+//     res
+//       .status(500)
+//       .json({ status: 500, error: "500", message: "Internal server error" });
+//   }
+// };
 
 const getAllUsers = async (req, res) => {
   try {
@@ -69,7 +69,9 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const id = req.params.id;
-    const user = await userMasterModel.findByPk(id);
+    const user = await userMasterModel.findByPk(id, {
+      include: [{ model: UserStatus }],
+    });
     if (!user) {
       res.status(404).json({
         status: 404,
@@ -92,8 +94,8 @@ const updateUserById = async (req, res) => {
     const id = req.params.id;
 
     const user = await userMasterModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { userId: id }, returning: true }
+      { ...req.body, updateddate: getCurrentDateTime() },
+      { where: { userid: id }, returning: true }
     );
 
     if (user.length === 0) {
@@ -118,7 +120,7 @@ const deleteUserById = async (req, res) => {
   try {
     const id = req.params.id;
     const user = await userMasterModel.destroy({
-      where: { userId: id },
+      where: { userid: id },
     });
 
     if (!user) {
@@ -143,7 +145,7 @@ const deleteUserById = async (req, res) => {
 };
 
 module.exports = {
-  createUser,
+  // createUser,
   getAllUsers,
   getUserById,
   updateUserById,
