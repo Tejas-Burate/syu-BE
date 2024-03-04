@@ -1,4 +1,4 @@
-const Null = require("tedious/lib/data-types/null");
+const jwt = require("jsonwebtoken");
 const getCurrentDateTime = require("../../../shared/middleware/currentTime");
 const otpGenerate = require("../../../shared/middleware/otpGenerate");
 const userModel = require("../userMaster/userMasterModel");
@@ -104,22 +104,32 @@ const otpVerify = async (req, res) => {
     const user = await userModel.findOne({
       where: { phone: phone, otp: newOtp },
     });
+
     if (!user) {
-      res
+      return res
         .status(401)
         .json({ status: 401, error: "401", message: "User not Authorized" });
-      return;
     }
-    res.status(200).json({
+
+    const token = jwt.sign(
+      { userid: user.userid },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    return res.status(200).json({
       status: 200,
       error: "200",
-      message: "Otp verified successfully..",
+      message: "OTP verified successfully.",
+      token: token,
     });
   } catch (error) {
-    console.log("error", error);
-    res
+    console.error("Error:", error);
+    return res
       .status(500)
-      .json({ status: 500, error: "500", message: "Internal server error.." });
+      .json({ status: 500, error: "500", message: "Internal server error." });
   }
 };
 
