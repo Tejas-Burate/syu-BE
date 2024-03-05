@@ -1,5 +1,5 @@
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
 const courseModel = require("./courseModel");
+const streamModel = require("../streamMaster/streamMasterModel");
 
 const createCourse = async (req, res) => {
   try {
@@ -13,8 +13,6 @@ const createCourse = async (req, res) => {
     }
     const course = await courseModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     if (!course) {
       res.status(400).json({
@@ -43,7 +41,9 @@ const createCourse = async (req, res) => {
 
 const getAllCourse = async (req, res) => {
   try {
-    const course = await courseModel.findAll();
+    const course = await courseModel.findAll({
+      include: [{ model: streamModel }],
+    });
     if (course.length === 0) {
       res
         .status(404)
@@ -65,7 +65,9 @@ const getAllCourse = async (req, res) => {
 const getCourseById = async (req, res) => {
   try {
     const id = req.params.id;
-    const course = await courseModel.findByPk(id);
+    const course = await courseModel.findByPk(id, {
+      include: [{ model: streamModel }],
+    });
     if (!course) {
       res.status(404).json({
         status: 404,
@@ -86,8 +88,8 @@ const updateCourseById = async (req, res) => {
     const id = req.params.id;
 
     const [rowsAffected, [updatedCourse]] = await courseModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { courseId: id }, returning: true }
+      { ...req.body },
+      { where: { courseid: id }, returning: true }
     );
 
     if (rowsAffected === 0 || !updatedCourse) {
@@ -112,7 +114,7 @@ const deleteCourseById = async (req, res) => {
   try {
     const id = req.params.id;
     const course = await courseModel.destroy({
-      where: { courseId: id },
+      where: { courseid: id },
     });
 
     if (!course) {

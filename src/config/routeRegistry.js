@@ -46,6 +46,11 @@ const syu = (app) => {
     require("../app/syu/workExperienceMaster/workExperienceMasterRoutes")
   );
   app.use("/manageTest", require("../app/syu/testMaster/testMasterRoutes"));
+  app.use(
+    "/termsAndCondition",
+    require("../app/syu/termsAndConditions/termsAndConditionsRoutes")
+  );
+  app.use("/stream", require("../app/syu/streamMaster/streamMasterRoutes"));
 };
 
 const routes = {

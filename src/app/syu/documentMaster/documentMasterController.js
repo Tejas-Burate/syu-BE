@@ -1,5 +1,5 @@
 const documentMasterModel = require("./documentMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createDocument = async (req, res) => {
   try {

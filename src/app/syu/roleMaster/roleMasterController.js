@@ -1,5 +1,5 @@
 const roleModel = require("./roleMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 const departmentModel = require("../departmentMaster/departmentMasterModel");
 const userModel = require("../userMaster/userMasterModel");
 const { Sequelize, Op } = require("sequelize");
@@ -15,8 +15,6 @@ const createRole = async (req, res) => {
     }
     const role = await roleModel.create({
       ...req.body,
-      createddate: getCurrentDateTime(),
-      updateddate: getCurrentDateTime(),
     });
     if (!role) {
       return res.status(400).json({
@@ -43,6 +41,8 @@ const createRole = async (req, res) => {
 
 const getAllRoles = async (req, res) => {
   try {
+    const user = req.user;
+    console.log("user", user);
     const roles = await roleModel.findAll({
       include: [{ model: departmentModel }, { model: userModel }],
     });
@@ -123,7 +123,7 @@ const updateRoleById = async (req, res) => {
   try {
     const id = req.params.id;
     const [rowsAffected, [updatedRole]] = await roleModel.update(
-      { ...req.body, updateddate: getCurrentDateTime() },
+      { ...req.body },
       { where: { roleid: id }, returning: true }
     );
     if (rowsAffected === 0 || !updatedRole) {

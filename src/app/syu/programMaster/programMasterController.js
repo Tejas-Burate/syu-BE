@@ -3,7 +3,7 @@ const programMasterModel = require("./programMasterModel");
 const courseModel = require("../courseMaster/courseModel");
 const collegeModel = require("../collegeMaster/collegeModel");
 const currencyModel = require("../currencyMaster/currencyModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createProgram = async (req, res) => {
   try {
@@ -17,8 +17,6 @@ const createProgram = async (req, res) => {
     }
     const program = await programMasterModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     if (!program) {
       res.status(400).json({
@@ -99,7 +97,7 @@ const getProgramByCourseId = async (req, res) => {
     const id = req.params.id;
     const program = await programMasterModel.findAll({
       where: {
-        courseId: id,
+        courseid: id,
       },
     });
     if (program.length === 0) {
@@ -120,7 +118,7 @@ const getProgramByCourseId = async (req, res) => {
     console.error("Error fetching program:", error);
     res
       .status(500)
-      .json({ status: 500, error: "500", message: "Interna server error" });
+      .json({ status: 500, error: "500", message: "Internal server error" });
   }
 };
 
@@ -129,7 +127,7 @@ const getProgramByCollegeId = async (req, res) => {
     const id = req.params.id;
     const program = await programMasterModel.findAll({
       where: {
-        collegeId: id,
+        collegeid: id,
       },
     });
     if (program.length === 0) {
@@ -150,7 +148,7 @@ const getProgramByCollegeId = async (req, res) => {
     console.error("Error fetching program:", error);
     res
       .status(500)
-      .json({ status: 500, error: "500", message: "Interna server error" });
+      .json({ status: 500, error: "500", message: "Internal server error" });
   }
 };
 
@@ -159,8 +157,8 @@ const updateProgramById = async (req, res) => {
     const id = req.params.id;
 
     const [rowsAffected, [updatedProgram]] = await programMasterModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { programmeId: id }, returning: true }
+      { ...req.body },
+      { where: { programmeid: id }, returning: true }
     );
 
     if (rowsAffected === 0 || !updatedProgram) {
@@ -185,7 +183,7 @@ const deleteProgramById = async (req, res) => {
   try {
     const id = req.params.id;
     const program = await programMasterModel.destroy({
-      where: { programmeId: id },
+      where: { programmeid: id },
     });
 
     if (!program) {

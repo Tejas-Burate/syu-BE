@@ -1,7 +1,7 @@
 const manageStudentModel = require("./manageStudentMasterModel");
 const programmeModel = require("../programMaster/programMasterModel");
 const userModel = require("../userMaster/userMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createManageStudent = async (req, res) => {
   try {

@@ -1,13 +1,28 @@
 const jwt = require("jsonwebtoken");
-function verifyToken(req, res, next) {
-  const token = req.header("Authorization");
-  if (!token) return res.status(401).json({ error: "Access denied" });
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET_KEY);
-    req.userId = decoded.userId;
-    next();
-  } catch (error) {
-    res.status(401).json({ error: "Invalid token" });
+async function verifyToken(req, res, next) {
+  let token;
+  let authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    res
+      .status(401)
+      .json({ status: 401, error: 401, message: "Bearer token is required" });
+    return;
+  }
+
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    token = authHeader.split(" ")[1];
+    console.log(token);
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      console.log("Decoded", decoded);
+      req.user = decoded;
+      next();
+    } catch (err) {
+      res
+        .status(401)
+        .json({ status: 401, error: 401, message: "User is not authorized" });
+    }
   }
 }
 

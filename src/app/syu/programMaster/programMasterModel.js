@@ -8,41 +8,40 @@ class Programme extends Model {}
 
 Programme.init(
   {
-    programmeId: {
+    programmeid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: true,
     },
-    collegeId: {
+    collegeid: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: College,
-        key: "collegeId",
+        key: "collegeid",
       },
     },
-    courseId: {
+    courseid: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: Course,
-        key: "courseId",
+        key: "courseid",
       },
     },
-    currencyId: {
+    currencyid: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: Currency,
-        key: "currencyId",
+        key: "currencyid",
       },
     },
     specialization: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    programmeLevel: {
+    programmelevel: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -50,15 +49,15 @@ Programme.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    tuitionFeePaymentMode: {
+    tuitionfeepaymentmode: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    semesterFeePayment: {
+    semesterfeepayment: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    additionalChargesForAdmission: {
+    additionalchargesforadmission: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
@@ -66,15 +65,15 @@ Programme.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    intakeTime: {
+    intaketime: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    applicationDeadlineDate: {
+    applicationdeadlinedate: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    timeTakenByUniversity: {
+    timetakenbyuniversity: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -82,23 +81,23 @@ Programme.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    languageOfTeaching: {
+    languageofteaching: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    programmeType: {
+    programmetype: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    universityEntranceExam: {
+    universityentranceexam: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    universityEntranceExamUrl: {
+    universityentranceexamurl: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    programmeDescription: {
+    programmedescription: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
@@ -106,23 +105,23 @@ Programme.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    conditionForScholarship: {
+    conditionforscholarship: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    workExperienceReq: {
+    workexperiencereq: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    courseLink: {
+    courselink: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    brochureLink: {
+    brochurelink: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    lateApplicationAllowed: {
+    lateapplicationallowed: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -130,11 +129,11 @@ Programme.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    hostelDescription: {
+    hosteldescription: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    hostelFees: {
+    hostelfees: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -142,15 +141,15 @@ Programme.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    importantNotes: {
+    importantnotes: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    mailerImageName: {
+    googledrivelinkforinformation: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    syuLink: {
+    syulink: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -158,33 +157,49 @@ Programme.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    createdBy: {
+    agentcommission: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    updatedBy: {
+    agentremarks: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    createdDate: {
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
+    createdby: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    updatedDate: {
+    updatedby: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    createddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updateddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
     sequelize,
-    tableName: "programmeMaster",
+    tableName: "programmemaster",
     modelName: "Programme",
-    timestamps: false,
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 
-Programme.belongsTo(College, { foreignKey: "collegeId" });
-Programme.belongsTo(Course, { foreignKey: "courseId" });
-Programme.belongsTo(Currency, { foreignKey: "currencyId" });
+Programme.belongsTo(College, { foreignKey: "collegeid" });
+Programme.belongsTo(Course, { foreignKey: "courseid" });
+Programme.belongsTo(Currency, { foreignKey: "currencyid" });
 
 module.exports = Programme;

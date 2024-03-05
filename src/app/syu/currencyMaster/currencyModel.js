@@ -4,43 +4,53 @@ const sequelize = require("../../../config/dbConnection");
 const Currency = sequelize.define(
   "Currency",
   {
-    currencyId: {
+    currencyid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    currencyName: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    valueINR: {
+    currencyname: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    valueDate: {
+    valueinr: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    createdBy: {
-      type: DataTypes.STRING(100),
+    valuedate: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
-    updatedBy: {
-      type: DataTypes.STRING(100),
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    createddate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+    },
+    updateddate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+    },
+    createdby: {
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
-    createdDate: {
-      type: DataTypes.STRING,
-    },
-    updatedDate: {
-      type: DataTypes.STRING,
+    updatedby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
   },
   {
     sequelize,
-    tableName: "currencyMaster",
+    tableName: "currencymaster",
     modelName: "Currency",
-    timestamps: false,
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 

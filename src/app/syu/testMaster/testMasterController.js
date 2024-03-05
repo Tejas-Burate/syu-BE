@@ -1,5 +1,5 @@
 const testMasterModel = require("./testMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createTest = async (req, res) => {
   try {

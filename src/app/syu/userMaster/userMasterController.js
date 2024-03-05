@@ -1,5 +1,5 @@
 const userMasterModel = require("./userMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 const UserStatus = require("../userStatusMaster/userStatusMasterModel");
 
 // const createUser = async (req, res) => {

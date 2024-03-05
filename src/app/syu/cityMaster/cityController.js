@@ -1,4 +1,4 @@
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 const countryModel = require("../countryMaster/countryModel");
 const cityModel = require("./cityModel");
 
@@ -14,8 +14,6 @@ const createCity = async (req, res) => {
     }
     const city = await cityModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     if (!city) {
       res.status(400).json({
@@ -88,8 +86,8 @@ const updateCityById = async (req, res) => {
     const id = req.params.id;
 
     const [rowsAffected, [updatedCity]] = await cityModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { cityId: id }, returning: true }
+      { ...req.body },
+      { where: { cityid: id }, returning: true }
     );
 
     if (rowsAffected === 0 || !updatedCity) {
@@ -114,7 +112,7 @@ const deleteCityById = async (req, res) => {
   try {
     const id = req.params.id;
     const city = await cityModel.destroy({
-      where: { cityId: id },
+      where: { cityid: id },
     });
 
     if (!city) {

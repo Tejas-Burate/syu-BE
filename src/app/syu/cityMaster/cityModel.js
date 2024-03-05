@@ -6,77 +6,81 @@ class City extends Model {}
 
 City.init(
   {
-    cityId: {
+    cityid: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    countryId: {
+    countryid: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Country,
-        key: "countryId", // Adjust according to the primary key of the countryMaster table
+        key: "countryid", // Adjust according to the primary key of the countryMaster table
       },
     },
-    cityName: {
+    cityname: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    stateName: {
+    statename: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
     population: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(50),
       allowNull: true,
     },
-    safetyIndex: {
-      type: DataTypes.INTEGER,
+    safetyindex: {
+      type: DataTypes.STRING(50),
       allowNull: true,
     },
-    maxTemp: {
-      type: DataTypes.DECIMAL(5, 2),
+    maxtemp: {
+      type: DataTypes.STRING(50),
       allowNull: true,
     },
-    minTemp: {
-      type: DataTypes.DECIMAL(5, 2),
+    mintemp: {
+      type: DataTypes.STRING(50),
       allowNull: true,
     },
-    timeZone: {
+    timezone: {
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    distanceFrmNearIntlAirport: {
-      type: DataTypes.DECIMAL(10, 2),
+    distancefrmnearintlairport: {
+      type: DataTypes.STRING(50),
       allowNull: false,
     },
-    createdBy: {
+    createdby: {
       type: DataTypes.STRING(100),
       allowNull: true,
     },
-    updatedBy: {
+    updatedby: {
       type: DataTypes.STRING(100),
       allowNull: true,
     },
-    createdDate: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
+    createddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
-    updatedDate: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
+    updateddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
     sequelize,
-    tableName: "cityMaster",
+    tableName: "citymaster",
     modelName: "City",
-    timestamps: false,
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 
-City.belongsTo(Country, { foreignKey: "countryId" }); // Define the association
+City.belongsTo(Country, { foreignKey: "countryid" }); // Define the association
 
 module.exports = City;

@@ -1,4 +1,4 @@
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const countryModel = require("./countryModel");
 
@@ -14,8 +14,6 @@ const createCountry = async (req, res) => {
     }
     const country = await countryModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     if (!country) {
       res.status(400).json({
@@ -87,8 +85,8 @@ const updateCountryById = async (req, res) => {
     const id = req.params.id;
 
     const [rowsAffected, [updatedCountry]] = await countryModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { countryId: id }, returning: true }
+      { ...req.body },
+      { where: { countryid: id }, returning: true }
     );
 
     if (rowsAffected === 0 || !updatedCountry) {
@@ -113,7 +111,7 @@ const deleteCountryById = async (req, res) => {
   try {
     const id = req.params.id;
     const country = await countryModel.destroy({
-      where: { countryId: id },
+      where: { countryid: id },
     });
 
     if (!country) {

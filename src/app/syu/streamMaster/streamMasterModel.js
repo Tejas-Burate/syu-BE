@@ -1,21 +1,23 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
 
-class Department extends Model {}
+class Stream extends Model {}
 
-Department.init(
+Stream.init(
   {
-    departmentid: {
+    streamid: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       autoIncrement: true,
-    },
-    departmentname: {
-      type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
     },
-    location: {
-      type: DataTypes.STRING,
+    streamname: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    streamfullfrom: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
     },
     isactive: {
       type: DataTypes.BOOLEAN,
@@ -42,12 +44,12 @@ Department.init(
   },
   {
     sequelize,
-    tableName: "departmentmaster",
-    modelName: "Department",
+    tableName: "streammaster",
+    modelName: "Stream",
     timestamps: true,
     createdAt: "createddate",
     updatedAt: "updateddate",
   }
 );
 
-module.exports = Department;
+module.exports = Stream;

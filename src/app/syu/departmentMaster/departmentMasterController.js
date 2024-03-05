@@ -1,6 +1,6 @@
 const departmentModel = require("./departmentMasterModel");
 const { Sequelize, Op } = require("sequelize");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createDepartment = async (req, res) => {
   try {
@@ -14,8 +14,6 @@ const createDepartment = async (req, res) => {
     }
     const department = await departmentModel.create({
       ...req.body,
-      createddate: getCurrentDateTime(),
-      updateddate: getCurrentDateTime(),
     });
     res.status(201).json({
       status: 201,
@@ -113,7 +111,7 @@ const updateDepartmentById = async (req, res) => {
   try {
     const id = req.params.id;
     const [rowsAffected] = await departmentModel.update(
-      { ...req.body, updateddate: getCurrentDateTime() },
+      { ...req.body },
       { where: { departmentid: id } }
     );
     if (rowsAffected === 0) {

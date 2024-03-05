@@ -1,4 +1,4 @@
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 const currencyModel = require("./currencyModel");
 
 const createCurrency = async (req, res) => {
@@ -13,8 +13,6 @@ const createCurrency = async (req, res) => {
     }
     const currency = await currencyModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     if (!currency) {
       res.status(400).json({
@@ -88,8 +86,8 @@ const updateCurrencyById = async (req, res) => {
     const id = req.params.id;
 
     const [rowsAffected, [updatedCurrency]] = await currencyModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { currencyId: id }, returning: true }
+      { ...req.body },
+      { where: { currencyid: id }, returning: true }
     );
 
     if (rowsAffected === 0 || !updatedCurrency) {
@@ -114,7 +112,7 @@ const deleteCurrencyById = async (req, res) => {
   try {
     const id = req.params.id;
     const currency = await currencyModel.destroy({
-      where: { currencyId: id },
+      where: { currencyid: id },
     });
 
     if (!currency) {

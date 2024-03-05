@@ -5,29 +5,29 @@ class Country extends Model {}
 
 Country.init(
   {
-    countryId: {
+    countryid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
     },
-    countryName: {
+    countryname: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    countryFlagUrl: {
+    countryflagurl: {
       type: DataTypes.STRING(255),
       allowNull: true,
     },
-    collegeCount: {
+    collegecount: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    avgStudyCost: {
+    avgstudycost: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    avgLivingCost: {
+    avglivingcost: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -39,37 +39,41 @@ Country.init(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    isActive: {
+    isactive: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 1,
+      defaultValue: true,
     },
     capital: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    createdBy: {
+    createdby: {
       type: DataTypes.STRING(100),
       allowNull: true,
     },
-    updatedBy: {
+    updatedby: {
       type: DataTypes.STRING(100),
       allowNull: true,
     },
-    createdDate: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
+    createddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
-    updatedDate: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
+    updateddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
     sequelize,
-    tableName: "countryMaster",
+    tableName: "countrymaster",
     modelName: "Country",
-    timestamps: false,
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 

@@ -1,3 +1,4 @@
+const verifyToken = require("../../../shared/middleware/jwtToken");
 const express = require("express");
 const {
   createRole,
@@ -11,7 +12,7 @@ const {
 const router = express.Router();
 
 router.post("/createRole", createRole);
-router.get("/getAllRoles", getAllRoles);
+router.get("/getAllRoles", verifyToken, getAllRoles);
 router.post("/getRoleByLocation", getRoleByLocation);
 router.get("/getRoleById/:id", getRoleById);
 router.put("/updateRoleById/:id", updateRoleById);

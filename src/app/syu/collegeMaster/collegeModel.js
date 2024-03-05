@@ -7,29 +7,29 @@ class College extends Model {}
 
 College.init(
   {
-    collegeId: {
+    collegeid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
     },
-    cityId: {
+    cityid: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    countryId: {
+    countryid: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    collegeName: {
+    collegename: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    collegeLevel: {
+    collegelevel: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    collegeCategory: {
+    collegecategory: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -41,7 +41,7 @@ College.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    zipCode: {
+    zipcode: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -49,133 +49,94 @@ College.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    universityContactNo: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    universityMailId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    collegeType: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    yearEstablished: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    googleMapLink: {
+    googlemaplink: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    distanceCapital: {
+    distancecapital: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    accrediation: {
+    gallerylink: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    awards: {
+    worldrankingwithref: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    galleryLink: {
+    countryrankingwithref: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    worldRankingWithRef: {
+    indianfood: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    countryRankingWithRef: {
+    livingexpenses: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    indianFood: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    livingExpenses: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    universityInfo: {
+    universityinfo: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    noOfIndianStudent: {
+    noofindianstudent: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    noOfInternationalStudent: {
+    noofinternationalstudent: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    alumniInfo: {
+    alumniinfo: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    contactPerson: {
+    approvedstatus: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    contactNo: {
+    approvedby: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    filledStatus: {
+    approveddate: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    filledBy: {
+
+    createdby: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    approvedStatus: {
+    updatedby: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    approvedBy: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    createddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
-    approvedDate: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    linkName: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    createdBy: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    updatedBy: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    createdDate: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    updatedDate: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    updateddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
     sequelize,
-    tableName: "collegeMaster",
+    tableName: "collegemaster",
     modelName: "College",
-    timestamps: false,
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 
 // Define associations
-College.belongsTo(City, { foreignKey: "cityId" });
-College.belongsTo(Country, { foreignKey: "countryId" });
+College.belongsTo(City, { foreignKey: "cityid" });
+College.belongsTo(Country, { foreignKey: "countryid" });
 
 module.exports = College;

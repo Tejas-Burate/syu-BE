@@ -1,5 +1,5 @@
 const AddressMaster = require("./addressMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createAddress = async (req, res) => {
   try {

@@ -1,4 +1,4 @@
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 const collegeModel = require("./collegeModel");
 const programMasterModel = require("../programMaster/programMasterModel");
 const cityMasterModel = require("../cityMaster/cityModel");
@@ -16,8 +16,6 @@ const createCollege = async (req, res) => {
     }
     const college = await collegeModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     if (!college) {
       res.status(400).json({
@@ -98,8 +96,8 @@ const updateCollegeById = async (req, res) => {
     const id = req.params.id;
 
     const [rowsAffected, [updatedCollege]] = await collegeModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { collegeId: id }, returning: true }
+      { ...req.body },
+      { where: { collegeid: id }, returning: true }
     );
 
     if (rowsAffected === 0 || !updatedCollege) {
@@ -124,7 +122,7 @@ const deleteCollegeById = async (req, res) => {
   try {
     const id = req.params.id;
     const college = await collegeModel.destroy({
-      where: { collegeId: id },
+      where: { collegeid: id },
     });
 
     if (!college) {

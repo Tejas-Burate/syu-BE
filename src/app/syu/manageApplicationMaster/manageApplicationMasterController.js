@@ -1,6 +1,6 @@
 const manageApplicationModel = require("./manageApplicationMasterModel");
 const manageStudentModel = require("../manageStudentMaster/manageStudentMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createApplication = async (req, res) => {
   try {

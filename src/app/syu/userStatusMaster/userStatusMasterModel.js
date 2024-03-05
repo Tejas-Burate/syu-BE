@@ -26,10 +26,10 @@ UserStatus.init(
     },
     departmentmanager: {
       type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: "userid",
-      },
+      // references: {
+      //   model: User,
+      //   key: "userid",
+      // },
     },
     isactive: {
       type: DataTypes.BOOLEAN,
@@ -38,10 +38,12 @@ UserStatus.init(
     createddate: {
       type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
     updateddate: {
       type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
     createdby: {
       type: DataTypes.INTEGER,
@@ -54,12 +56,14 @@ UserStatus.init(
     sequelize,
     modelName: "UserStatus",
     tableName: "userstatusmaster", // Adjust the table name if needed
-    timestamps: false,
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 
 // Define foreign key associations
 UserStatus.belongsTo(Department, { foreignKey: "departmentid" });
-// UserStatus.belongsTo(User, { foreignKey: "departmentmanager" });
+// UserStatus.hasMany(User, { foreignKey: "departmentmanager" });
 
 module.exports = UserStatus;

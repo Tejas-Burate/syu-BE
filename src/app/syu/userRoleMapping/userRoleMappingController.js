@@ -2,7 +2,7 @@ const userModel = require("../userMaster/userMasterModel");
 const roleModel = require("../roleMaster/roleMasterModel");
 const userRoleMappingModel = require("../userRoleMapping/userRoleMappingModel");
 const { Sequelize, Op } = require("sequelize");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createUserRoleMapping = async (req, res) => {
   try {

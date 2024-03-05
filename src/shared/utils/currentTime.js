@@ -10,5 +10,5 @@ const getCurrentDateTime = () => {
     return null; // Return null or handle error appropriately
   }
 };
-console.log(getCurrentDateTime());
+
 module.exports = getCurrentDateTime;

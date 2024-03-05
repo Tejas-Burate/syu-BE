@@ -1,5 +1,5 @@
 const workExperienceMasterModel = require("./workExperienceMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createWorkExperience = async (req, res) => {
   try {

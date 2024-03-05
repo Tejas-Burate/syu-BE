@@ -1,37 +1,18 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection"); // Adjust the path as per your project structure
-const Department = require("../departmentMaster/departmentMasterModel");
-const User = require("../userMaster/userMasterModel");
 
-class Role extends Model {}
+class TermsAndConditions extends Model {}
 
-Role.init(
+TermsAndConditions.init(
   {
-    roleid: {
+    termandconditions_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    rolename: {
+    subject: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    departmentid: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Department,
-        key: "departmentid",
-      },
-    },
-    departmentmanager: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: "userid",
-      },
-    },
-    location: {
-      type: DataTypes.STRING,
     },
     isactive: {
       type: DataTypes.STRING(10),
@@ -56,15 +37,12 @@ Role.init(
   },
   {
     sequelize,
-    modelName: "Role",
-    tableName: "rolemaster",
+    modelName: "TermsAndConditions",
+    tableName: "termsconditions",
     timestamps: true,
     createdAt: "createddate",
     updatedAt: "updateddate",
   }
 );
 
-Role.belongsTo(Department, { foreignKey: "departmentid" });
-Role.belongsTo(User, { foreignKey: "departmentmanager" });
-
-module.exports = Role;
+module.exports = TermsAndConditions;

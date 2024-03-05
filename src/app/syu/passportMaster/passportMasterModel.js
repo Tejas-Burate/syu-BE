@@ -1,57 +1,87 @@
 const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../../../config/dbConnection"); // Adjust the path as per your project structure
+const sequelize = require("../../../config/dbConnection");
 const User = require("../userMaster/userMasterModel");
 
 class PassportMaster extends Model {}
 
 PassportMaster.init(
   {
-    passportId: {
+    passportid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    userId: {
+    userid: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: User,
-        key: "userId",
+        key: "userid",
       },
     },
-    passportNumber: {
+    passportno: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    issueDate: {
+    passportdoi: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    expiryDate: {
+    passportdoe: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    issueCountry: {
+    passportpoi: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    createdDate: {
-      type: DataTypes.DATE,
+    passportia: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    updatedDate: {
+    refusedforvisa: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    validvisapermit: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    createddate: {
       type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updateddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    createdby: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    updatedby: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
   {
     sequelize,
-    tableName: "passportMaster",
+    tableName: "passportmaster",
     modelName: "PassportMaster",
-    timestamps: false,
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 
-PassportMaster.belongsTo(User, { foreignKey: "userId" });
+PassportMaster.belongsTo(User, { foreignKey: "userid" });
+PassportMaster.belongsTo(User, { foreignKey: "createdby" });
+PassportMaster.belongsTo(User, { foreignKey: "updatedby" });
 
 module.exports = PassportMaster;

@@ -1,5 +1,5 @@
 const passportMasterModel = require("./passportMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createPassport = async (req, res) => {
   try {
@@ -13,8 +13,6 @@ const createPassport = async (req, res) => {
     }
     const passport = await passportMasterModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     res.status(201).json({
       status: 201,
@@ -97,7 +95,7 @@ const updatePassportById = async (req, res) => {
   try {
     const id = req.params.id;
     const [rowsAffected] = await passportMasterModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
+      { ...req.body },
       { where: { passportId: id } }
     );
     if (rowsAffected === 0) {

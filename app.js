@@ -2,12 +2,21 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const sequelize = require("./src/config/dbConnection");
-const { json } = require("sequelize");
+const Limiter = require("./src/shared/middleware/rateLimit");
+const helmet = require("helmet");
+const morgan = require("morgan");
 
 dotenv.config();
 
 const app = express();
 
+// app.use(Limiter);
+app.use(
+  morgan(
+    ":method :remote-addr :url :status :res[content-length] - :response-time"
+  )
+);
+app.use(helmet());
 app.use(express.json({ limit: "50mb" }));
 app.use(
   cors({

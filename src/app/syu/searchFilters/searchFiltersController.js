@@ -98,38 +98,38 @@ const globalSearch = async (req, res) => {
       where: {
         [Op.or]: [
           {
-            "$College.collegeName$": {
-              [Op.like]: `%${search}%`,
+            "$College.collegename$": {
+              [Op.iLike]: `%${search}%`,
             },
           },
           {
-            "$College.City.cityName$": {
-              [Op.like]: `%${search}%`,
+            "$College.City.cityname$": {
+              [Op.iLike]: `%${search}%`,
             },
           },
           {
-            "$College.Country.countryName$": {
-              [Op.like]: `%${search}%`,
+            "$College.Country.countryname$": {
+              [Op.iLike]: `%${search}%`,
             },
           },
           {
-            programmeLevel: {
-              [Op.like]: `%${search}%`,
+            programmelevel: {
+              [Op.iLike]: `%${search}%`,
             },
           },
           {
-            intakeTime: {
-              [Op.like]: `%${search}%`,
+            intaketime: {
+              [Op.iLike]: `%${search}%`,
             },
           },
           {
-            "$Course.courseFullForm$": {
-              [Op.like]: `%${search}%`,
+            "$Course.coursefullform$": {
+              [Op.iLike]: `%${search}%`,
             },
           },
           {
-            "$Course.courseName$": {
-              [Op.like]: `%${search}%`,
+            "$Course.coursename$": {
+              [Op.iLike]: `%${search}%`,
             },
           },
         ],

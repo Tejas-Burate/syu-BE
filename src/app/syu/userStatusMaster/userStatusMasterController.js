@@ -1,5 +1,5 @@
 const userStatusModel = require("./userStatusMasterModel");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createUserStatus = async (req, res) => {
   try {
@@ -12,8 +12,6 @@ const createUserStatus = async (req, res) => {
     }
     const userStatus = await userStatusModel.create({
       ...req.body,
-      createddate: getCurrentDateTime(),
-      updateddate: getCurrentDateTime(),
     });
     return res.status(201).json({
       status: 201,
@@ -83,7 +81,7 @@ const updateUserStatusById = async (req, res) => {
   try {
     const id = req.params.id;
     const [rowsAffected, updatedUserStatus] = await userStatusModel.update(
-      { ...req.body, updateddate: getCurrentDateTime() },
+      { ...req.body },
       { where: { userstatusid: id }, returning: true }
     );
     if (rowsAffected === 0) {

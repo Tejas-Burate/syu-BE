@@ -1,19 +1,21 @@
 const jwt = require("jsonwebtoken");
-const getCurrentDateTime = require("../../../shared/middleware/currentTime");
-const otpGenerate = require("../../../shared/middleware/otpGenerate");
+const getCurrentDateTime = require("../../../shared/utils/currentTime");
+const otpGenerate = require("../../../shared/utils/otpGenerate");
 const userModel = require("../userMaster/userMasterModel");
+const userRoleMappingModel = require("../userRoleMapping/userRoleMappingModel");
+const roleModel = require("../roleMaster/roleMasterModel");
+const bcrypt = require("bcrypt");
 
 const register = async (req, res) => {
   try {
     const { fullName, email, phone, password, referenceId } = req.body;
+    const hashedPasword = await bcrypt.hash(password, 10);
     const registerUser = await userModel.create({
       username: fullName,
       email: email,
       phone: phone,
-      password: password,
+      password: hashedPasword,
       referenceId: referenceId,
-      craeteddate: getCurrentDateTime(),
-      craeteddate: getCurrentDateTime(),
     });
 
     if (!registerUser) {
@@ -30,36 +32,70 @@ const register = async (req, res) => {
       message: "User register successfully..",
     });
   } catch (error) {
-    console.log("error", error);
-    res
-      .status(500)
-      .json({ status: 500, error: "500", message: "Internal server error.." });
+    if (error.name === "SequelizeUniqueConstraintError") {
+      const errorMessage = error.errors.map((err) => err.message).join(", ");
+      return res.status(400).json({
+        status: 400,
+        error: "Bad Request",
+        message: errorMessage,
+      });
+    } else {
+      console.error("Error:", error);
+      return res.status(500).json({
+        status: 500,
+        error: "Internal Server Error",
+        message: "Internal server error",
+      });
+    }
   }
 };
 
 const emailLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await userModel.findOne({
-      where: { email: email, password: password },
-    });
+
+    const user = await userModel.findOne({ where: { email: email } });
     if (!user) {
-      res.status(401).json({
+      return res.status(401).json({
         status: 401,
         error: "401",
-        message: `user is unauthorized....`,
+        message: `User with email ${email} not found.`,
       });
-      return;
+    }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({
+        status: 401,
+        error: "401",
+        message: `Incorrect password.`,
+      });
     }
 
-    res
-      .status(200)
-      .json({ status: 200, error: "200", message: "Login successful.." });
+    const userRole = await userRoleMappingModel.findOne({
+      where: { userid: user.userid },
+      include: [{ model: roleModel, attributes: ["rolename"] }],
+    });
+
+    const tokenPayload = {
+      userid: user.userid,
+      usertype: userRole?.Role?.rolename || "unknown",
+    };
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1h",
+    });
+
+    res.status(200).json({
+      status: 200,
+      error: "200",
+      message: "Login successful.",
+      token: token,
+    });
   } catch (error) {
-    console.log("error", error);
+    console.error("Login error:", error);
     res
       .status(500)
-      .json({ status: 500, error: "500", message: "Internal server error.." });
+      .json({ status: 500, error: "500", message: "Internal server error." });
   }
 };
 
@@ -110,9 +146,15 @@ const otpVerify = async (req, res) => {
         .status(401)
         .json({ status: 401, error: "401", message: "User not Authorized" });
     }
+    const userRole = await userRoleMappingModel.findOne({
+      where: { userid: user.userid },
+      include: [{ model: roleModel, attributes: ["rolename"] }],
+    });
+
+    console.log("userRole", userRole.rolename);
 
     const token = jwt.sign(
-      { userid: user.userid },
+      { userid: user.userid, usertype: userRole.Role.rolename },
       process.env.JWT_SECRET_KEY,
       {
         expiresIn: "1h",

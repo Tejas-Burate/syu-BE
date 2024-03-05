@@ -1,58 +1,66 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
+const Stream = require("../streamMaster/streamMasterModel");
+
 class Course extends Model {}
 
 Course.init(
   {
-    courseId: {
+    courseid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: true,
     },
-    courseName: {
+    coursename: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    // courseLevel: {
-    //   type: DataTypes.STRING,
-    //   allowNull: true,
-    // },
-    courseFullForm: {
+    coursefullform: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    filledBy: {
-      type: DataTypes.STRING,
+    streamid: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: Stream,
+        key: "streamid",
+      },
+    },
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      default: true,
+    },
+    createddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updateddate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    createdby: {
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
-    streamName: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    createdBy: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    updatedBy: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    createdDate: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    updatedDate: {
-      type: DataTypes.STRING,
+    updatedby: {
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
   },
   {
     sequelize,
-    tableName: "courseMaster",
+    tableName: "coursemaster",
     modelName: "Course",
-    timestamps: false,
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 
+Course.belongsTo(Stream, { foreignKey: "streamid" });
 module.exports = Course;

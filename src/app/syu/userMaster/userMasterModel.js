@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
 const UserStatus = require("../userStatusMaster/userStatusMasterModel");
+const TermsAndConditions = require("../termsAndConditions/termsAndConditionsModel");
 
 class User extends Model {}
 
@@ -17,12 +18,14 @@ User.init(
     },
     email: {
       type: DataTypes.STRING,
+      unique: true,
     },
     emailpassword: {
       type: DataTypes.STRING,
     },
     phone: {
       type: DataTypes.STRING,
+      unique: true,
     },
     otp: {
       type: DataTypes.STRING,
@@ -58,11 +61,22 @@ User.init(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    termandconditions_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: TermsAndConditions, // Assuming the name of the UserStatus model
+        key: "termandconditions_id",
+      },
+    },
     createddate: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
     updateddate: {
-      type: DataTypes.STRING,
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
     createdby: {
       type: DataTypes.INTEGER,
@@ -74,11 +88,14 @@ User.init(
   {
     sequelize,
     modelName: "User",
-    tableName: "usermaster", // Adjust the table name if needed
-    timestamps: false,
+    tableName: "usermaster",
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 
 User.belongsTo(UserStatus, { foreignKey: "userstatusid" });
+User.belongsTo(TermsAndConditions, { foreignKey: "termandconditions_id" });
 
 module.exports = User;
