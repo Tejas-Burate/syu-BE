@@ -1,4 +1,4 @@
-const AddressMaster = require("./addressMasterModel");
+const addressModel = require("./addressMasterModel");
 const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createAddress = async (req, res) => {
@@ -11,10 +11,8 @@ const createAddress = async (req, res) => {
       });
       return;
     }
-    const address = await AddressMaster.create({
+    const address = await addressModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     res.status(201).json({
       status: 201,
@@ -34,7 +32,7 @@ const createAddress = async (req, res) => {
 
 const getAllAddresses = async (req, res) => {
   try {
-    const addresses = await AddressMaster.findAll();
+    const addresses = await addressModel.findAll();
     res.status(200).json({ status: 200, data: addresses });
   } catch (error) {
     console.error("Error fetching addresses:", error);
@@ -49,8 +47,8 @@ const getAllAddresses = async (req, res) => {
 const getAddressByUserId = async (req, res) => {
   try {
     const id = req.params.id;
-    const addresses = await AddressMaster.findAll({
-      where: { userId: id },
+    const addresses = await addressModel.findAll({
+      where: { userid: id },
     });
     if (addresses.length === 0) {
       res.status(404).json({
@@ -74,7 +72,7 @@ const getAddressByUserId = async (req, res) => {
 const getAddressById = async (req, res) => {
   try {
     const id = req.params.id;
-    const address = await AddressMaster.findByPk(id);
+    const address = await addressModel.findByPk(id);
     if (!address) {
       res.status(404).json({
         status: 404,
@@ -97,9 +95,9 @@ const getAddressById = async (req, res) => {
 const updateAddressById = async (req, res) => {
   try {
     const id = req.params.id;
-    const [rowsAffected] = await AddressMaster.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { addressId: id } }
+    const [rowsAffected] = await addressModel.update(
+      { ...req.body },
+      { where: { addressid: id } }
     );
     if (rowsAffected === 0) {
       res.status(404).json({
@@ -109,7 +107,7 @@ const updateAddressById = async (req, res) => {
       });
       return;
     }
-    const updatedAddress = await AddressMaster.findByPk(id);
+    const updatedAddress = await addressModel.findByPk(id);
     res.status(200).json({ status: 200, data: updatedAddress });
   } catch (error) {
     console.error("Error updating address:", error);
@@ -124,8 +122,8 @@ const updateAddressById = async (req, res) => {
 const deleteAddressById = async (req, res) => {
   try {
     const id = req.params.id;
-    const rowsDeleted = await AddressMaster.destroy({
-      where: { addressId: id },
+    const rowsDeleted = await addressModel.destroy({
+      where: { addressid: id },
     });
     if (rowsDeleted === 0) {
       res.status(404).json({

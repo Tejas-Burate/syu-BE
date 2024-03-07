@@ -1,4 +1,8 @@
 const express = require("express");
+const {
+  emailValidationMiddleware,
+  phoneValidationMiddleware,
+} = require("../../../shared/middleware/validationMiddleware");
 
 const {
   register,
@@ -9,7 +13,12 @@ const {
 
 const router = express.Router();
 
-router.post("/register", register);
+router.post(
+  "/register",
+  emailValidationMiddleware,
+  phoneValidationMiddleware,
+  register
+);
 router.post("/emailLogin", emailLogin);
 router.post("/otpLogin", otpLogin);
 router.post("/otpVerify", otpVerify);

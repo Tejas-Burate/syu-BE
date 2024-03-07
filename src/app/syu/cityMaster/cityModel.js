@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
 const Country = require("../countryMaster/countryModel");
+const State = require("../stateMaster/stateMasterModel");
 
 class City extends Model {}
 
@@ -24,9 +25,13 @@ City.init(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    statename: {
+    stateid: {
       type: DataTypes.STRING(100),
       allowNull: false,
+      references: {
+        model: State,
+        key: "countryid", // Adjust according to the primary key of the countryMaster table
+      },
     },
     population: {
       type: DataTypes.STRING(50),
@@ -82,5 +87,6 @@ City.init(
 );
 
 City.belongsTo(Country, { foreignKey: "countryid" }); // Define the association
+City.belongsTo(State, { foreignKey: "stateid" }); // Define the association
 
 module.exports = City;

@@ -1,32 +1,19 @@
 const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../../../config/dbConnection");
-const Role = require("../roleMaster/roleMasterModel");
+const sequelize = require("../../../config/dbConnection"); // Adjust the path as per your project structure
 const User = require("../userMaster/userMasterModel");
 
-class UserRole extends Model {}
+class EducationLevel extends Model {}
 
-UserRole.init(
+EducationLevel.init(
   {
-    userroleid: {
+    edulevelid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    userid: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: "userid",
-      },
+    edulevelname: {
+      type: DataTypes.STRING,
     },
-    roleid: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Role,
-        key: "roleid",
-      },
-    },
-
     isactive: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
@@ -50,15 +37,12 @@ UserRole.init(
   },
   {
     sequelize,
-    modelName: "UserRole",
-    tableName: "userrolemapping",
+    tableName: "educationlevelmaster",
+    modelName: "EducationLevel",
     timestamps: true,
     createdAt: "createddate",
     updatedAt: "updateddate",
   }
 );
 
-UserRole.belongsTo(User, { foreignKey: "userid" });
-UserRole.belongsTo(Role, { foreignKey: "roleid" });
-
-module.exports = UserRole;
+module.exports = EducationLevel;

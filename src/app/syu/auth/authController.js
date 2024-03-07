@@ -26,6 +26,36 @@ const register = async (req, res) => {
       });
       return;
     }
+
+    const user = await userModel.findOne({
+      where: {
+        phone: phone,
+        email: email,
+      },
+    });
+
+    if (!user) {
+      res.status(400).json({
+        status: 400,
+        error: 400,
+        message: "Failed to register user...",
+      });
+      return;
+    }
+
+    const assignRoleToUser = await userRoleMappingModel.create({
+      userid: user.userid,
+      roleid: 1,
+    });
+
+    if (!assignRoleToUser) {
+      res.status(400).json({
+        status: 400,
+        error: 400,
+        message: "Failed to register user...",
+      });
+      return;
+    }
     res.status(201).json({
       status: 201,
       error: "201",
@@ -140,7 +170,7 @@ const otpVerify = async (req, res) => {
     const user = await userModel.findOne({
       where: { phone: phone, otp: newOtp },
     });
-
+    console.log("User", user);
     if (!user) {
       return res
         .status(401)
@@ -151,7 +181,7 @@ const otpVerify = async (req, res) => {
       include: [{ model: roleModel, attributes: ["rolename"] }],
     });
 
-    console.log("userRole", userRole.rolename);
+    console.log("userRole", userRole);
 
     const token = jwt.sign(
       { userid: user.userid, usertype: userRole.Role.rolename },

@@ -51,6 +51,15 @@ const syu = (app) => {
     require("../app/syu/termsAndConditions/termsAndConditionsRoutes")
   );
   app.use("/stream", require("../app/syu/streamMaster/streamMasterRoutes"));
+  app.use("/state", require("../app/syu/stateMaster/stateMasterRoutes"));
+  app.use(
+    "/educationLevel",
+    require("../app/syu/educationLevelMaster/educationLevelMasterRoutes")
+  );
+  app.use(
+    "/qualification",
+    require("../app/syu/qualificationMaster/qualificationMasterRoutes")
+  );
 };
 
 const routes = {

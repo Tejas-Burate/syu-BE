@@ -16,10 +16,18 @@ College.init(
     cityid: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: City, // Assuming the name of the UserStatus model
+        key: "cityid",
+      },
     },
     countryid: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: Country, // Assuming the name of the UserStatus model
+        key: "countryid",
+      },
     },
     collegename: {
       type: DataTypes.STRING,

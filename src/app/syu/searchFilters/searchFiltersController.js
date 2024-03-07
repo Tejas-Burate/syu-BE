@@ -3,138 +3,114 @@ const courseModel = require("../courseMaster/courseModel");
 const programMasterModel = require("../programMaster/programMasterModel");
 const cityModel = require("../cityMaster/cityModel");
 const countryModel = require("../countryMaster/countryModel");
+const stateModel = require("../stateMaster/stateMasterModel");
 const { Sequelize, Op } = require("sequelize");
 
-// const globalSearch = async (req, res) => {
-//   try {
-//     const { search } = req.body;
-
-//     const colleges = await collegeModel.findAll({
-//       where: {
-//         [Op.or]: [
-//           {
-//             collegeName: {
-//               [Op.like]: `%${search}%`,
-//             },
-//           },
-//           {
-//             "$City.cityName$": {
-//               [Op.like]: `%${search}%`,
-//             },
-//           },
-//           {
-//             "$Country.countryName$": {
-//               [Op.like]: `%${search}%`,
-//             },
-//           },
-//         ],
-//       },
-//       include: [{ model: cityModel }, { model: countryModel }],
-//     });
-
-//     const courses = await courseModel.findAll({
-//       where: {
-//         [Op.or]: [
-//           {
-//             courseName: {
-//               [Op.like]: `%${search}%`,
-//             },
-//           },
-//           {
-//             courseFullForm: {
-//               [Op.like]: `%${search}%`,
-//             },
-//           },
-//         ],
-//       },
-//     });
-
-//     let response = {};
-
-//     if (colleges.length > 0) {
-//       response.colleges = colleges;
-//     }
-
-//     if (courses.length > 0) {
-//       response.courses = courses;
-//     }
-
-//     const totalRecords = Object.keys(response).reduce(
-//       (total, key) =>
-//         total + (Array.isArray(response[key]) ? response[key].length : 1),
-//       0
-//     );
-
-//     if (totalRecords > 0) {
-//       return res.status(200).json({
-//         status: 200,
-//         totalRecords: totalRecords,
-//         data: response,
-//       });
-//     }
-
-//     return res.status(404).json({
-//       status: 404,
-//       error: "404",
-//       message: `No results found for ${search}.`,
-//     });
-//   } catch (error) {
-//     console.error("Error:", error);
-//     res.status(500).json({ status: 500, error: "Internal server error." });
-//   }
-// };
 const globalSearch = async (req, res) => {
   try {
-    const { search } = req.body;
+    const {
+      limit,
+      skip,
+      fees,
+      globalSearch,
+      programmeLevel,
+      intakeTime,
+      country,
+      state,
+      programmeDuration,
+    } = req.body;
 
-    const programs = await programMasterModel.findAll({
-      include: [
-        { model: courseModel },
+    const whereConditions = {
+      [Op.or]: [
         {
-          model: collegeModel,
-          include: [{ model: cityModel }, { model: countryModel }],
+          "$College.collegename$": {
+            [Op.iLike]: `%${globalSearch}%`,
+          },
+        },
+        {
+          "$College.City.cityname$": {
+            [Op.iLike]: `%${globalSearch}%`,
+          },
+        },
+        {
+          "$College.City.State.statename$": {
+            [Op.iLike]: `%${globalSearch}%`,
+          },
+        },
+        {
+          "$College.Country.countryname$": {
+            [Op.iLike]: `%${globalSearch}%`,
+          },
+        },
+        {
+          "$Course.coursefullform$": {
+            [Op.iLike]: `%${globalSearch}%`,
+          },
+        },
+        {
+          "$Course.coursename$": {
+            [Op.iLike]: `%${globalSearch}%`,
+          },
         },
       ],
-      where: {
-        [Op.or]: [
+    };
+
+    if (programmeLevel) {
+      whereConditions.programmelevel = {
+        [Op.iLike]: `%${programmeLevel}%`,
+      };
+    }
+
+    if (intakeTime.length > 0) {
+      whereConditions.intaketime = {
+        [Op.or]: intakeTime.map((intake) => ({
+          [Op.iLike]: `%${intake}%`,
+        })),
+      };
+    }
+    if (state.length > 0) {
+      whereConditions["$College.City.State.statename$"] = {
+        [Op.or]: state.map((state) => ({
+          [Op.iLike]: `%${state}%`,
+        })),
+      };
+    }
+    if (country.length > 0) {
+      whereConditions["$College.Country.countryname$"] = {
+        [Op.or]: country.map((country) => ({
+          [Op.iLike]: `%${country}%`,
+        })),
+      };
+    }
+    if (programmeDuration) {
+      whereConditions.duration = {
+        [Op.iLike]: `%${programmeDuration}%`,
+      };
+    }
+
+    if (fees && fees.minFees !== "" && fees.maxFees !== "") {
+      whereConditions.fees = {
+        [Op.between]: [fees.minFees, fees.maxFees],
+      };
+    }
+    // Add similar conditions for country and state if provided
+
+    const programs = await programMasterModel.findAll(
+      {
+        include: [
+          { model: courseModel },
           {
-            "$College.collegename$": {
-              [Op.iLike]: `%${search}%`,
-            },
-          },
-          {
-            "$College.City.cityname$": {
-              [Op.iLike]: `%${search}%`,
-            },
-          },
-          {
-            "$College.Country.countryname$": {
-              [Op.iLike]: `%${search}%`,
-            },
-          },
-          {
-            programmelevel: {
-              [Op.iLike]: `%${search}%`,
-            },
-          },
-          {
-            intaketime: {
-              [Op.iLike]: `%${search}%`,
-            },
-          },
-          {
-            "$Course.coursefullform$": {
-              [Op.iLike]: `%${search}%`,
-            },
-          },
-          {
-            "$Course.coursename$": {
-              [Op.iLike]: `%${search}%`,
-            },
+            model: collegeModel,
+            include: [
+              { model: cityModel, include: [{ model: stateModel }] },
+              { model: countryModel },
+            ],
           },
         ],
+        where: whereConditions,
       },
-    });
+      { limit: limit, offset: skip }
+    );
 
     if (programs.length > 0) {
       return res.status(200).json({
@@ -147,7 +123,7 @@ const globalSearch = async (req, res) => {
     return res.status(404).json({
       status: 404,
       error: "404",
-      message: `No results found for ${search}.`,
+      message: `No results found for ${globalSearch}.`,
     });
   } catch (error) {
     console.error("Error:", error);

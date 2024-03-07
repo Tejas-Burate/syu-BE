@@ -1,35 +1,39 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
-const Role = require("../roleMaster/roleMasterModel");
-const User = require("../userMaster/userMasterModel");
+const Country = require("../countryMaster/countryModel");
 
-class UserRole extends Model {}
+class State extends Model {}
 
-UserRole.init(
+State.init(
   {
-    userroleid: {
+    stateid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    userid: {
+    countryid: {
       type: DataTypes.INTEGER,
       references: {
-        model: User,
-        key: "userid",
+        model: Country, // Assuming the name of the UserStatus model
+        key: "countryid",
       },
     },
-    roleid: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: Role,
-        key: "roleid",
-      },
+    statename: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-
     isactive: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
       defaultValue: true,
+    },
+    createdby: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    updatedby: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     createddate: {
       type: DataTypes.DATE,
@@ -41,24 +45,17 @@ UserRole.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    createdby: {
-      type: DataTypes.INTEGER,
-    },
-    updatedby: {
-      type: DataTypes.INTEGER,
-    },
   },
   {
     sequelize,
-    modelName: "UserRole",
-    tableName: "userrolemapping",
+    modelName: "State",
+    tableName: "statemaster",
     timestamps: true,
     createdAt: "createddate",
     updatedAt: "updateddate",
   }
 );
 
-UserRole.belongsTo(User, { foreignKey: "userid" });
-UserRole.belongsTo(Role, { foreignKey: "roleid" });
+State.belongsTo(Country, { foreignKey: "countryid" });
 
-module.exports = UserRole;
+module.exports = State;

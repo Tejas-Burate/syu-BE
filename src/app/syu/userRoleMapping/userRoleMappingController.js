@@ -35,6 +35,23 @@ const createUserRoleMapping = async (req, res) => {
   }
 };
 
+//  const createUserRole=async(userid,roleid)=>{
+//   try {
+//     const createUserRole= await userRoleMappingModel.create({userid:userid,roleid:roleid,createdby:,updatedby:});
+//     if(!createUserRole){
+//       res.status(400).json({status:400,error:"400",message:"Failed to register a user.."});
+//       return;
+//     }
+//   } catch (error) {
+//     console.log('error', error)
+//     res.status(500).json({
+//       status: 500,
+//       error: "500",
+//       message: "Internal server error.",
+//     });
+//   }
+//   }
+
 const getAllUserRoleMapping = async (req, res) => {
   try {
     const userRole = await userRoleMappingModel.findAll({

@@ -1,6 +1,6 @@
 const generateOTP = () => {
   const characters = "0123456789"; // Characters to be used in the OTP
-  const length = 4;
+  const length = 6;
   let otp = "";
 
   for (let i = 0; i < length; i++) {

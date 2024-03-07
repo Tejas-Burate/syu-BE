@@ -1,6 +1,7 @@
 const getCurrentDateTime = require("../../../shared/utils/currentTime");
 const countryModel = require("../countryMaster/countryModel");
 const cityModel = require("./cityModel");
+const stateModel = require("../stateMaster/stateMasterModel");
 
 const createCity = async (req, res) => {
   try {
@@ -43,7 +44,7 @@ const createCity = async (req, res) => {
 const getAllCity = async (req, res) => {
   try {
     const city = await cityModel.findAll({
-      include: [{ model: countryModel }],
+      include: [{ model: stateModel }, { model: countryModel }],
     });
     if (city.length === 0) {
       res
@@ -64,7 +65,7 @@ const getCityById = async (req, res) => {
   try {
     const id = req.params.id;
     const city = await cityModel.findByPk(id, {
-      include: [{ model: countryModel }],
+      include: [{ model: stateModel }, { model: countryModel }],
     });
     if (!city) {
       res.status(404).json({

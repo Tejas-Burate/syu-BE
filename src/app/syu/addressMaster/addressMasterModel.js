@@ -1,75 +1,94 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection"); // Adjust the path as per your project structure
 const User = require("../userMaster/userMasterModel");
+const Country = require("../countryMaster/countryModel");
+const City = require("../cityMaster/cityModel");
+const State = require("../stateMaster/stateMasterModel");
 
-class AddressMaster extends Model {}
+class Address extends Model {}
 
-AddressMaster.init(
+Address.init(
   {
-    addressId: {
+    addressid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    userId: {
+    userid: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: User,
-        key: "userId",
+        key: "userid",
       },
     },
-    mAddressLine1: {
+    addressline1: {
       type: DataTypes.STRING,
     },
-    mAddressLine2: {
+    addressline2: {
       type: DataTypes.STRING,
     },
-    mCountry: {
+    countryid: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: Country,
+        key: "countryid",
+      },
+    },
+    stateid: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: State,
+        key: "stateid",
+      },
+    },
+    cityid: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: City,
+        key: "cityid",
+      },
+    },
+    pincode: {
       type: DataTypes.STRING,
     },
-    mState: {
+    addresstype: {
       type: DataTypes.STRING,
     },
-    mCity: {
-      type: DataTypes.STRING,
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
-    mPincode: {
-      type: DataTypes.STRING,
-    },
-    pAddressLine1: {
-      type: DataTypes.STRING,
-    },
-    pAddressLine2: {
-      type: DataTypes.STRING,
-    },
-    pCountry: {
-      type: DataTypes.STRING,
-    },
-    pState: {
-      type: DataTypes.STRING,
-    },
-    pCity: {
-      type: DataTypes.STRING,
-    },
-    pPincode: {
-      type: DataTypes.STRING,
-    },
-    createdDate: {
+    createddate: {
       type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
-    updatedDate: {
+    updateddate: {
       type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    createdby: {
+      type: DataTypes.INTEGER,
+    },
+    updatedby: {
+      type: DataTypes.INTEGER,
     },
   },
   {
     sequelize,
-    tableName: "addressMaster",
-    modelName: "AddressMaster",
-    timestamps: false,
+    tableName: "addressmaster",
+    modelName: "Address",
+    timestamps: true,
+    createdAt: "createddate",
+    updatedAt: "updateddate",
   }
 );
 
-AddressMaster.belongsTo(User, { foreignKey: "userId" });
+Address.belongsTo(User, { foreignKey: "userid" });
+Address.belongsTo(Country, { foreignKey: "countryid" });
+Address.belongsTo(State, { foreignKey: "stateid" });
+Address.belongsTo(City, { foreignKey: "cityid" });
 
-module.exports = AddressMaster;
+module.exports = Address;
