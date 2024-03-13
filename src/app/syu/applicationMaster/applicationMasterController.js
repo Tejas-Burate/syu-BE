@@ -1,5 +1,5 @@
-const manageApplicationModel = require("./manageApplicationMasterModel");
-const manageStudentModel = require("../manageStudentMaster/manageStudentMasterModel");
+const manageApplicationModel = require("./applicationMasterModel");
+const manageStudentModel = require("../studentMaster/studentMasterModel");
 const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
 const createApplication = async (req, res) => {

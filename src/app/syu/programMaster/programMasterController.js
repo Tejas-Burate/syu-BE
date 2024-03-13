@@ -3,7 +3,7 @@ const programMasterModel = require("./programMasterModel");
 const courseModel = require("../courseMaster/courseModel");
 const collegeModel = require("../collegeMaster/collegeModel");
 const currencyModel = require("../currencyMaster/currencyModel");
-const getCurrentDateTime = require("../../../shared/utils/currentTime");
+const intakeModel = require("../intakeMaster/intakeMasterModel");
 
 const createProgram = async (req, res) => {
   try {
@@ -44,6 +44,7 @@ const getAllProgram = async (req, res) => {
   try {
     const program = await programMasterModel.findAll({
       include: [
+        { model: intakeModel },
         { model: courseModel },
         { model: collegeModel },
         { model: currencyModel },
@@ -70,6 +71,7 @@ const getProgramById = async (req, res) => {
     const id = req.params.id;
     const program = await programMasterModel.findByPk(id, {
       include: [
+        { model: intakeModel },
         { model: courseModel },
         { model: collegeModel },
         { model: currencyModel },

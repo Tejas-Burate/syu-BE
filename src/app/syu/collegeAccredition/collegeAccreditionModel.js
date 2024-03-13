@@ -1,39 +1,41 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
-const User = require("../userMaster/userMasterModel");
+const College = require("../collegeMaster/collegeModel");
 
-class WorkExperience extends Model {}
+class CollegeAccreditation extends Model {}
 
-WorkExperience.init(
+CollegeAccreditation.init(
   {
-    experienceid: {
+    clgaccredid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      allowNull: false,
     },
-    userid: {
+    collegeid: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: User,
-        key: "userid",
+        model: College,
+        key: "collegeid",
       },
     },
-    companyname: {
+    accreditation: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    jobtitle: {
+    agencyname: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    startdate: {
-      type: DataTypes.DATE,
+    year: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    enddate: {
-      type: DataTypes.DATE,
-      allowNull: true,
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     },
     createddate: {
       type: DataTypes.DATE,
@@ -45,17 +47,25 @@ WorkExperience.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    createdby: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    updatedby: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     sequelize,
-    modelName: "WorkExperience",
-    tableName: "workexperience",
+    tableName: "collegeaccreditation",
+    modelName: "CollegeAccreditation",
     timestamps: true,
     createdAt: "createddate",
     updatedAt: "updateddate",
   }
 );
 
-WorkExperience.belongsTo(User, { foreignKey: "userid" });
+CollegeAccreditation.belongsTo(College, { foreignKey: "collegeid" });
 
-module.exports = WorkExperience;
+module.exports = CollegeAccreditation;

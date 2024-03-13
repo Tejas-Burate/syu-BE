@@ -47,17 +47,16 @@ const getAllCity = async (req, res) => {
       include: [{ model: stateModel }, { model: countryModel }],
     });
     if (city.length === 0) {
-      res
+      return res
         .status(404)
         .json({ status: 404, error: 404, message: "city data not found.." });
-      return;
     }
-    res
+    return res
       .status(200)
       .json({ status: 200, error: 200, totalRecords: city.length, data: city });
   } catch (error) {
     console.error("Error fetching city:", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 

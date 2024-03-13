@@ -21,13 +21,10 @@ const syu = (app) => {
   app.use("/currency", require("../app/syu/currencyMaster/currencyRoutes"));
   app.use("/program", require("../app/syu/programMaster/programMasterRoutes"));
   app.use("/user", require("../app/syu/userMaster/userMasterRoutes"));
-  app.use(
-    "/manageStudent",
-    require("../app/syu/manageStudentMaster/manageStudentMasterRoutes")
-  );
+  app.use("/student", require("../app/syu/studentMaster/studentMasterRoutes"));
   app.use(
     "/manageApplication",
-    require("../app/syu/manageApplicationMaster/manageApplicationMasterRoutes")
+    require("../app/syu/applicationMaster/applicationMasterRoutes")
   );
   app.use(
     "/manageDocument",
@@ -60,6 +57,29 @@ const syu = (app) => {
     "/qualification",
     require("../app/syu/qualificationMaster/qualificationMasterRoutes")
   );
+  app.use(
+    "/documentType",
+    require("../app/syu/documentType/documentTypeRoutes")
+  );
+  app.use("/exam", require("../app/syu/englishExam/englishExamRoutes"));
+  app.use(
+    "/clgContact",
+    require("../app/syu/collegeContact/collegeContactRoutes")
+  );
+  app.use(
+    "/clgAccred",
+    require("../app/syu/collegeAccredition/collegeAccreditionRoutes")
+  );
+  app.use("/clgAward", require("../app/syu/collegeAward/collegeAwardRoutes"));
+  app.use(
+    "/programmePriority",
+    require("../app/syu/programmePriority/programmePriorityRoutes")
+  );
+  app.use(
+    "/programmeLink",
+    require("../app/syu/programmeLink/programmeLinkRoutes")
+  );
+  app.use("/intake", require("../app/syu/intakeMaster/intakeMasterRoutes"));
 };
 
 const routes = {

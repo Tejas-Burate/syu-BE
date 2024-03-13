@@ -1,8 +1,7 @@
-const collegeModel = require("./collegeModel");
-const cityMasterModel = require("../cityMaster/cityModel");
-const countryMasterModel = require("../countryMaster/countryModel");
+const collegeAwardModel = require("./collegeAwardModel");
+const collegeModel = require("../collegeMaster/collegeModel");
 
-const createCollege = async (req, res) => {
+const createCollegeAward = async (req, res) => {
   try {
     if (!req.body) {
       res.status(400).json({
@@ -12,22 +11,22 @@ const createCollege = async (req, res) => {
       });
       return;
     }
-    const college = await collegeModel.create({
+    const collegeAward = await collegeAwardModel.create({
       ...req.body,
     });
-    if (!college) {
+    if (!collegeAward) {
       res.status(400).json({
         status: 400,
         error: "400",
-        message: "Failed to create college..",
+        message: "Failed to create college award..",
       });
       return;
     }
     res.status(201).json({
       status: 201,
       error: "201",
-      message: "college created successfully..",
-      data: college,
+      message: "College award created successfully..",
+      data: collegeAward,
     });
   } catch (error) {
     console.log("error", error);
@@ -40,22 +39,24 @@ const createCollege = async (req, res) => {
   }
 };
 
-const getAllCollege = async (req, res) => {
+const getAllCollegeAwards = async (req, res) => {
   try {
-    const college = await collegeModel.findAll({
-      include: [{ model: cityMasterModel }, { model: countryMasterModel }],
+    const collegeAwards = await collegeAwardModel.findAll({
+      include: [{ model: collegeModel }],
     });
-    if (college.length === 0) {
-      res
-        .status(404)
-        .json({ status: 404, error: 404, message: "College data not found.." });
+    if (collegeAwards.length === 0) {
+      res.status(404).json({
+        status: 404,
+        error: 404,
+        message: "College award data not found..",
+      });
       return;
     }
     res.status(200).json({
       status: 200,
       error: 200,
-      totalRecords: college.length,
-      data: college,
+      totalRecords: collegeAwards.length,
+      data: collegeAwards,
     });
   } catch (error) {
     console.log("error", error);
@@ -65,22 +66,22 @@ const getAllCollege = async (req, res) => {
   }
 };
 
-const getCollegeById = async (req, res) => {
+const getCollegeAwardById = async (req, res) => {
   try {
     const id = req.params.id;
-    const college = await collegeModel.findByPk(id, {
-      include: [{ model: cityMasterModel }, { model: countryMasterModel }],
+    const collegeAward = await collegeAwardModel.findByPk(id, {
+      include: [{ model: collegeModel }],
     });
-    if (!college) {
+    if (!collegeAward) {
       res.status(404).json({
         status: 404,
         error: 404,
-        message: `college of id ${id} is not found`,
+        message: `College award of id ${id} is not found`,
       });
       return;
     }
 
-    res.status(200).json({ status: 200, error: 200, data: college });
+    res.status(200).json({ status: 200, error: 200, data: collegeAward });
   } catch (error) {
     console.log("error", error);
     res
@@ -89,38 +90,41 @@ const getCollegeById = async (req, res) => {
   }
 };
 
-const updateCollegeById = async (req, res) => {
+const updateCollegeAwardById = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const [rowsAffected, [updatedCollege]] = await collegeModel.update(
-      { ...req.body },
-      { where: { collegeid: id }, returning: true }
-    );
+    const [rowsAffected, [updatedCollegeAward]] =
+      await collegeAwardModel.update(
+        { ...req.body },
+        { where: { clgawardid: id }, returning: true }
+      );
 
-    if (rowsAffected === 0 || !updatedCollege) {
+    if (rowsAffected === 0 || !updatedCollegeAward) {
       res.status(400).json({
         status: 400,
         error: "400",
-        message: `Failed to update college of ID ${id}.`,
+        message: `Failed to update college award of ID ${id}.`,
       });
       return;
     }
 
-    res.status(200).json({ status: 200, error: "200", data: updatedCollege });
+    res
+      .status(200)
+      .json({ status: 200, error: "200", data: updatedCollegeAward });
   } catch (error) {
-    console.error("Error:", error);
+    console.log("error", error);
     res
       .status(500)
       .json({ status: 500, error: "500", message: "Internal server error" });
   }
 };
 
-const deleteCollegeById = async (req, res) => {
+const deleteCollegeAwardById = async (req, res) => {
   try {
     const id = req.params.id;
-    const college = await collegeModel.destroy({
-      where: { collegeid: id },
+    const college = await collegeAwardModel.destroy({
+      where: { clgawardid: id },
     });
 
     if (!college) {
@@ -145,9 +149,9 @@ const deleteCollegeById = async (req, res) => {
 };
 
 module.exports = {
-  createCollege,
-  getAllCollege,
-  getCollegeById,
-  updateCollegeById,
-  deleteCollegeById,
+  createCollegeAward,
+  getAllCollegeAwards,
+  getCollegeAwardById,
+  updateCollegeAwardById,
+  deleteCollegeAwardById,
 };

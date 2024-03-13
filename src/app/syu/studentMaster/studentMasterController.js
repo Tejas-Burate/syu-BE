@@ -1,9 +1,8 @@
-const manageStudentModel = require("./manageStudentMasterModel");
+const studentModel = require("./studentMasterModel");
 const programmeModel = require("../programMaster/programMasterModel");
 const userModel = require("../userMaster/userMasterModel");
-const getCurrentDateTime = require("../../../shared/utils/currentTime");
 
-const createManageStudent = async (req, res) => {
+const createStudent = async (req, res) => {
   try {
     if (!req.body) {
       res.status(400).json({
@@ -13,10 +12,8 @@ const createManageStudent = async (req, res) => {
       });
       return;
     }
-    const student = await manageStudentModel.create({
+    const student = await studentModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     if (!student) {
       res.status(400).json({
@@ -40,9 +37,11 @@ const createManageStudent = async (req, res) => {
   }
 };
 
-const getAllManageStudents = async (req, res) => {
+const getAllStudents = async (req, res) => {
   try {
-    const students = await manageStudentModel.findAll();
+    const students = await studentModel.findAll({
+      include: [{ model: userModel }],
+    });
     if (students.length === 0) {
       res.status(404).json({
         status: 404,
@@ -65,10 +64,12 @@ const getAllManageStudents = async (req, res) => {
   }
 };
 
-const getManageStudentById = async (req, res) => {
+const getStudentById = async (req, res) => {
   try {
     const id = req.params.id;
-    const student = await manageStudentModel.findByPk(id);
+    const student = await studentModel.findByPk(id, {
+      include: [{ model: userModel }],
+    });
     if (!student) {
       res.status(404).json({
         status: 404,
@@ -85,12 +86,13 @@ const getManageStudentById = async (req, res) => {
       .json({ status: 500, error: "500", message: "Internal server error" });
   }
 };
-const getManageStudentByUserId = async (req, res) => {
+
+const getStudentByUserId = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const student = await manageStudentModel.findAll({
-      include: [{ model: userModel }, { model: programmeModel }],
-      where: { userId: userId },
+    const student = await studentModel.findAll({
+      include: [{ model: userModel }],
+      where: { userid: userId },
     });
     if (student.length === 0) {
       res.status(404).json({
@@ -109,13 +111,13 @@ const getManageStudentByUserId = async (req, res) => {
   }
 };
 
-const updateManageStudentById = async (req, res) => {
+const updateStudentById = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const student = await manageStudentModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { studentId: id }, returning: true }
+    const student = await studentModel.update(
+      { ...req.body },
+      { where: { studentid: id }, returning: true }
     );
 
     if (student[0] === 0) {
@@ -126,7 +128,7 @@ const updateManageStudentById = async (req, res) => {
       });
       return;
     }
-    const updatedStudent = await manageStudentModel.findByPk(id);
+    const updatedStudent = await studentModel.findByPk(id);
     res.status(200).json({ status: 200, error: "200", data: updatedStudent });
   } catch (error) {
     console.error("Error:", error);
@@ -136,11 +138,11 @@ const updateManageStudentById = async (req, res) => {
   }
 };
 
-const deleteManageStudentById = async (req, res) => {
+const deleteStudentById = async (req, res) => {
   try {
     const id = req.params.id;
-    const student = await manageStudentModel.destroy({
-      where: { studentId: id },
+    const student = await studentModel.destroy({
+      where: { studentid: id },
     });
 
     if (!student) {
@@ -165,10 +167,10 @@ const deleteManageStudentById = async (req, res) => {
 };
 
 module.exports = {
-  createManageStudent,
-  getAllManageStudents,
-  getManageStudentById,
-  getManageStudentByUserId,
-  updateManageStudentById,
-  deleteManageStudentById,
+  createStudent,
+  getAllStudents,
+  getStudentById,
+  getStudentByUserId,
+  updateStudentById,
+  deleteStudentById,
 };

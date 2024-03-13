@@ -1,58 +1,53 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
-const User = require("../userMaster/userMasterModel");
-const Programme = require("../programMaster/programMasterModel");
+const ManageStudent = require("../studentMaster/studentMasterModel");
+class Application extends Model {}
 
-class ManageStudent extends Model {}
-
-ManageStudent.init(
+Application.init(
   {
-    studentId: {
+    applicationId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      allowNull: false,
+      allowNull: true,
     },
-    userId: {
+    studentId: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: User,
-        key: "userId",
+        model: ManageStudent,
+        key: "studentId",
       },
     },
-    programmeId: {
-      type: DataTypes.INTEGER,
+    ackNo: {
+      type: DataTypes.STRING,
       allowNull: true,
-      references: {
-        model: Programme,
-        key: "programmeId",
-      },
     },
     studentName: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    email: {
+    universityName: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    mobile: {
+    programmeName: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    createdBy: {
+    intake: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    assignedTo: {
+    applicationStatus: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    status: {
+    kcAssigned: {
       type: DataTypes.STRING,
       allowNull: true,
     },
+
     createdDate: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -64,13 +59,12 @@ ManageStudent.init(
   },
   {
     sequelize,
-    tableName: "studentMaster",
-    modelName: "manageStudentModel",
+    tableName: "applicationMaster",
+    modelName: "Application",
     timestamps: false,
   }
 );
 
-ManageStudent.belongsTo(User, { foreignKey: "userId" });
-ManageStudent.belongsTo(Programme, { foreignKey: "programmeId" });
+Application.belongsTo(ManageStudent, { foreignKey: "studentId" });
 
-module.exports = ManageStudent;
+module.exports = Application;

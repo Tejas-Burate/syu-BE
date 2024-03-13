@@ -1,39 +1,38 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
-const User = require("../userMaster/userMasterModel");
 
-class WorkExperience extends Model {}
+class DocumentType extends Model {}
 
-WorkExperience.init(
+DocumentType.init(
   {
-    experienceid: {
+    documenttypeid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    userid: {
+    documentname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    showtostudent: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    showtoagent: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    createdby: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: User,
-        key: "userid",
-      },
     },
-    companyname: {
-      type: DataTypes.STRING,
+    updatedby: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    jobtitle: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    startdate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    enddate: {
-      type: DataTypes.DATE,
-      allowNull: true,
     },
     createddate: {
       type: DataTypes.DATE,
@@ -48,14 +47,12 @@ WorkExperience.init(
   },
   {
     sequelize,
-    modelName: "WorkExperience",
-    tableName: "workexperience",
+    tableName: "documenttypemaster",
+    modelName: "DocumentType",
     timestamps: true,
     createdAt: "createddate",
     updatedAt: "updateddate",
   }
 );
 
-WorkExperience.belongsTo(User, { foreignKey: "userid" });
-
-module.exports = WorkExperience;
+module.exports = DocumentType;

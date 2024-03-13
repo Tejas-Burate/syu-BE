@@ -1,65 +1,66 @@
 const { DataTypes, Model } = require("sequelize");
-const sequelize = require("../../../config/dbConnection"); // Adjust the path as per your project structure
+const sequelize = require("../../../config/dbConnection");
 const User = require("../userMaster/userMasterModel");
+const DocumentType = require("../documentType/documentTypeModel");
 
-class DocumentMaster extends Model {}
+class Document extends Model {}
 
-DocumentMaster.init(
+Document.init(
   {
-    documentId: {
+    documentid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    userId: {
+    userid: {
       type: DataTypes.INTEGER,
       references: {
         model: User,
-        key: "userId",
+        key: "userid",
       },
     },
-    bachelorIndividualMarksheets: {
+    documenttypeid: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: DocumentType,
+        key: "documenttypeid",
+      },
+    },
+    documenturl: {
       type: DataTypes.STRING,
     },
-    consolidatedMarksheets: {
-      type: DataTypes.STRING,
+    showtouser: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
-    academicTranscript: {
-      type: DataTypes.STRING,
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
-    provisionalFinalDegreeCertificate: {
-      type: DataTypes.STRING,
-    },
-    passport: {
-      type: DataTypes.STRING,
-    },
-    cv: {
-      type: DataTypes.STRING,
-    },
-    letterOfRecommendation: {
-      type: DataTypes.STRING,
-    },
-    statementOfPurposeEssay: {
-      type: DataTypes.STRING,
-    },
-    englishLanguageCertificate: {
-      type: DataTypes.STRING,
-    },
-    createdDate: {
+    createddate: {
       type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
-    updatedDate: {
+    updateddate: {
       type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    createdby: {
+      type: DataTypes.INTEGER,
+    },
+    updatedby: {
+      type: DataTypes.INTEGER,
     },
   },
   {
     sequelize,
-    tableName: "documentMaster",
-    modelName: "DocumentMaster",
+    tableName: "documentmaster",
+    modelName: "Document",
     timestamps: false,
   }
 );
 
-DocumentMaster.belongsTo(User, { foreignKey: "userId" });
+Document.belongsTo(User, { foreignKey: "userid" });
+Document.belongsTo(DocumentType, { foreignKey: "documenttypeid" });
 
-module.exports = DocumentMaster;
+module.exports = Document;

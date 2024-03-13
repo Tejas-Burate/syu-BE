@@ -13,8 +13,6 @@ const createDocument = async (req, res) => {
     }
     const document = await documentMasterModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     res.status(201).json({
       status: 201,
@@ -50,7 +48,7 @@ const getDocumentByUserId = async (req, res) => {
   try {
     const id = req.params.id;
     const document = await documentMasterModel.findAll({
-      where: { userId: id },
+      where: { userid: id },
     });
     if (!document.length === 0) {
       res.status(404).json({
@@ -98,8 +96,8 @@ const updateDocumentById = async (req, res) => {
   try {
     const id = req.params.id;
     const [rowsAffected] = await documentMasterModel.update(
-      { ...req.body, updatedDate: getCurrentDateTime() },
-      { where: { documentId: id } }
+      { ...req.body },
+      { where: { documentid: id } }
     );
     if (rowsAffected === 0) {
       res.status(404).json({
@@ -125,7 +123,7 @@ const deleteDocumentById = async (req, res) => {
   try {
     const id = req.params.id;
     const rowsDeleted = await documentMasterModel.destroy({
-      where: { documentId: id },
+      where: { documentid: id },
     });
     if (rowsDeleted === 0) {
       res.status(404).json({

@@ -1,5 +1,5 @@
 const workExperienceMasterModel = require("./workExperienceMasterModel");
-const getCurrentDateTime = require("../../../shared/utils/currentTime");
+const userModel = require("../userMaster/userMasterModel");
 
 const createWorkExperience = async (req, res) => {
   try {
@@ -13,8 +13,6 @@ const createWorkExperience = async (req, res) => {
     }
     const workExperience = await workExperienceMasterModel.create({
       ...req.body,
-      createdDate: getCurrentDateTime(),
-      updatedDate: getCurrentDateTime(),
     });
     res.status(201).json({
       status: 201,
@@ -34,8 +32,14 @@ const createWorkExperience = async (req, res) => {
 
 const getAllWorkExperiences = async (req, res) => {
   try {
-    const workExperiences = await workExperienceMasterModel.findAll();
-    res.status(200).json({ status: 200, data: workExperiences });
+    const workExperiences = await workExperienceMasterModel.findAll({
+      include: [{ model: userModel }],
+    });
+    res.status(200).json({
+      status: 200,
+      totalRecords: workExperiences.length,
+      data: workExperiences,
+    });
   } catch (error) {
     console.error("Error fetching work experiences:", error);
     res.status(500).json({
@@ -49,7 +53,9 @@ const getAllWorkExperiences = async (req, res) => {
 const getWorkExperienceById = async (req, res) => {
   try {
     const id = req.params.id;
-    const workExperience = await workExperienceMasterModel.findByPk(id);
+    const workExperience = await workExperienceMasterModel.findByPk(id, {
+      include: [{ model: userModel }],
+    });
     if (!workExperience) {
       res.status(404).json({
         status: 404,
@@ -68,13 +74,15 @@ const getWorkExperienceById = async (req, res) => {
     });
   }
 };
+
 const getWorkExperienceByUserId = async (req, res) => {
   try {
     const id = req.params.id;
     const workExperience = await workExperienceMasterModel.findAll({
-      where: { userId: id },
+      where: { userid: id },
+      include: [{ model: userModel }],
     });
-    if (!workExperience.length === 0) {
+    if (workExperience.length === 0) {
       res.status(404).json({
         status: 404,
         error: "404",

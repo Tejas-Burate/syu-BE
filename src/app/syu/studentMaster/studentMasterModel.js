@@ -1,174 +1,175 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
-const College = require("../collegeMaster/collegeModel");
-const Course = require("../courseMaster/courseModel");
-const Currency = require("../currencyMaster/currencyModel");
-const Intake = require("../intakeMaster/intakeMasterModel");
+const User = require("../userMaster/userMasterModel");
+const Address = require("../addressMaster/addressMasterModel");
 
-class Programme extends Model {}
+class StudentMaster extends Model {}
 
-Programme.init(
+StudentMaster.init(
   {
-    programmeid: {
+    studentid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-    },
-    collegeid: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: College,
-        key: "collegeid",
-      },
-    },
-    courseid: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: Course,
-        key: "courseid",
-      },
-    },
-    currencyid: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: Currency,
-        key: "currencyid",
-      },
-    },
-    intakeid: {
-      type: DataTypes.STRING,
       allowNull: false,
+    },
+    syurm: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
       references: {
-        model: Intake,
-        key: "intakeid",
+        model: User,
+        key: "userid", // Assuming "userid" is the correct key in User model
       },
     },
-
-    specialization: {
+    userid: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: User,
+        key: "userid",
+      },
+    },
+    refno: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    programmelevel: {
+    refname: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    fees: {
+    agentuserid: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    agentref: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    tuitionfeepaymentmode: {
+    email: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    semesterfeepayment: {
+    isdcode: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    additionalchargesforadmission: {
+    mobile: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    firstname: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    middlename: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    lastname: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    dob: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    panno: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    aadhaarno: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    parentname: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    mothername: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    parentisdcode: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    parentno: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    parentmailid: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    studentwhatsappno: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    studentfacebookid: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    studentinstagramid: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    remarks: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    maddressid: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: Address,
+        key: "addressid",
+      },
+      paddressid: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: Address,
+          key: "addressid",
+        },
+      },
+    },
+    countryofinterest: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    serviceofinterest: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    lasteducationcountry: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    lasteducationlevel: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    lastgradingscheme: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    lastgradingaverage: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
-    eligibility: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-
-    applicationdeadlinedate: {
+    countryofcitizenship: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    timetakenbyuniversity: {
+    stateofcitizenship: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    campus: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    languageofteaching: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    programmetype: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    universityentranceexam: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    universityentranceexamurl: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    programmedescription: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    scholarship: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    conditionforscholarship: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    workexperiencereq: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    courselink: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    brochurelink: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    lateapplicationallowed: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    accommodation: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    hosteldescription: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    hostelfees: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    placement: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    importantnotes: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    googledrivelinkforinformation: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    syulink: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    duration: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    agentcommission: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    agentremarks: {
+    firstlanguage: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -176,38 +177,37 @@ Programme.init(
       type: DataTypes.BOOLEAN,
       allowNull: true,
     },
-    createdby: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    updatedby: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
     createddate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
       defaultValue: DataTypes.NOW,
     },
     updateddate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
       defaultValue: DataTypes.NOW,
+    },
+    createdby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    updatedby: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
   },
   {
     sequelize,
-    tableName: "programmemaster",
-    modelName: "Programme",
+    modelName: "StudentMaster",
+    tableName: "studentmaster",
     timestamps: true,
     createdAt: "createddate",
     updatedAt: "updateddate",
   }
 );
 
-Programme.belongsTo(College, { foreignKey: "collegeid" });
-Programme.belongsTo(Course, { foreignKey: "courseid" });
-Programme.belongsTo(Currency, { foreignKey: "currencyid" });
-Programme.belongsTo(Intake, { foreignKey: "intakeid" });
+StudentMaster.belongsTo(User, { foreignKey: "userid" });
+StudentMaster.belongsTo(Address, { foreignKey: "maddressid" });
+StudentMaster.belongsTo(Address, { foreignKey: "paddressid" });
 
-module.exports = Programme;
+module.exports = StudentMaster;

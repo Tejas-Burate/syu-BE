@@ -1,38 +1,52 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../../../config/dbConnection");
-const User = require("../userMaster/userMasterModel");
+const College = require("../collegeMaster/collegeModel.js");
 
-class WorkExperience extends Model {}
+class CollegeAward extends Model {}
 
-WorkExperience.init(
+CollegeAward.init(
   {
-    experienceid: {
+    clgawardid: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      allowNull: false,
     },
-    userid: {
+    collegeid: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: User,
-        key: "userid",
+        model: College,
+        key: "collegeid",
       },
     },
-    companyname: {
+    award: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    jobtitle: {
+    agency: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    startdate: {
-      type: DataTypes.DATE,
+    date: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    enddate: {
-      type: DataTypes.DATE,
+    year: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    isactive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
+    createdby: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    updatedby: {
+      type: DataTypes.STRING,
       allowNull: true,
     },
     createddate: {
@@ -48,14 +62,15 @@ WorkExperience.init(
   },
   {
     sequelize,
-    modelName: "WorkExperience",
-    tableName: "workexperience",
+    tableName: "collegeaward",
+    modelName: "CollegeAward",
     timestamps: true,
     createdAt: "createddate",
     updatedAt: "updateddate",
   }
 );
 
-WorkExperience.belongsTo(User, { foreignKey: "userid" });
+// Define associations
+CollegeAward.belongsTo(College, { foreignKey: "collegeid" });
 
-module.exports = WorkExperience;
+module.exports = CollegeAward;

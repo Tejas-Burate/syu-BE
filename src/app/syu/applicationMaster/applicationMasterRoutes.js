@@ -6,7 +6,7 @@ const {
   getApplicationByManageStudentId,
   updateApplicationById,
   deleteApplicationById,
-} = require("./manageApplicationMasterController");
+} = require("./applicationMasterController");
 
 const router = express.Router();
 
